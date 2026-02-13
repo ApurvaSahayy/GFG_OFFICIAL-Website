@@ -4,6 +4,10 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import PageTransition from "@/components/ui/page-transition";
 import { CommandPalette } from "@/components/ui/command-palette";
+import { MouseFollower } from "@/components/ui/mouse-follower";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { NoiseOverlay } from "@/components/ui/noise-overlay";
+import { SmoothScroll } from "@/components/ui/smooth-scroll";
 
 // Quantum-Digital Typography
 const spaceGrotesk = Space_Grotesk({
@@ -60,6 +64,10 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground font-sans selection:bg-green-500/30 selection:text-green-200`}
       >
+        <SmoothScroll />
+        <MouseFollower />
+        <ScrollProgress />
+        <NoiseOverlay />
         <CommandPalette />
         <PageTransition>{children}</PageTransition>
         <Toaster />

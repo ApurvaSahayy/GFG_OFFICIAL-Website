@@ -3,15 +3,22 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion"
 import { cn } from "@/lib/utils"
-import { Menu, X, Terminal, ChevronRight, LogIn } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Menu, X, Terminal, ChevronRight } from "lucide-react"
+import { JoinModal } from "@/components/features/JoinModal"
 
 export function Navbar() {
     const [scrolled, setScrolled] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
+    const [showJoinModal, setShowJoinModal] = useState(false)
     const router = useRouter()
+    const { scrollYProgress } = useScroll()
+    const scaleX = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    })
 
     useEffect(() => {
         const handleScroll = () => {
@@ -23,10 +30,9 @@ export function Navbar() {
 
     const navLinks = [
         { label: "Home", href: "/", id: "01" },
-        { label: "Innovations", href: "#innovation", id: "02" },
-        { label: "Challenges", href: "#potd", id: "03" },
-        { label: "Events", href: "#events", id: "04" },
-        { label: "Team", href: "#team", id: "05" },
+        { label: "Innovation", href: "#innovation", id: "02" },
+        { label: "Events", href: "#events", id: "03" },
+        { label: "Team", href: "#team", id: "04" },
     ]
 
     const scrollToSection = (e: React.MouseEvent, href: string) => {
@@ -41,132 +47,121 @@ export function Navbar() {
     }
 
     return (
-        <motion.header
-            initial={{ y: -100 }}
-            animate={{ y: 0 }}
-            transition={{ type: "spring", stiffness: 40, damping: 20 }}
-            className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6"
-        >
-            <div
-                className={cn(
-                    "relative transition-all duration-500 ease-out flex items-center justify-between",
-                    scrolled
-                        ? "w-[95%] md:w-[85%] lg:w-[1200px] bg-background/90 backdrop-blur-md border border-border/50 shadow-tech rounded-none px-6 py-3"
-                        : "w-full max-w-7xl px-8 py-4 bg-transparent border-transparent"
-                )}
+        <>
+            <JoinModal isOpen={showJoinModal} onClose={() => setShowJoinModal(false)} />
+
+            {/* Scroll Progress Bar */}
+            <motion.div
+                className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-purple-500 to-primary z-[60] origin-left"
+                style={{ scaleX }}
+            />
+
+            <motion.header
+                initial={{ y: -100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 40, damping: 20, delay: 0.5 }}
+                className="fixed top-6 left-0 right-0 z-50 flex justify-center pointer-events-none"
             >
-                {/* Tech Corners for Scrolled State */}
-                {scrolled && (
-                    <>
-                        <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-primary" />
-                        <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-primary" />
-                        <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-primary" />
-                        <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-primary" />
-                    </>
-                )}
-
-                {/* Logo Area */}
                 <div
-                    className="flex items-center gap-3 cursor-pointer group"
-                    onClick={() => router.push('/')}
+                    className={cn(
+                        "pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex items-center justify-between",
+                        "backdrop-blur-xl border",
+                        scrolled
+                            ? "w-[90%] md:w-[600px] rounded-full bg-black/40 border-white/5 shadow-[0_8px_32px_rgba(0,255,128,0.15)] px-4 py-2"
+                            : "w-[95%] max-w-7xl bg-transparent border-transparent px-6 py-4"
+                    )}
                 >
-                    <div className="w-10 h-10 flex items-center justify-center bg-primary text-primary-foreground font-mono font-bold text-lg">
-                        <span>&gt;_</span>
+                    {/* Logo Area */}
+                    <div
+                        className="flex items-center gap-3 cursor-pointer group"
+                        onClick={() => router.push('/')}
+                    >
+                        <div className="w-10 h-10 flex items-center justify-center bg-black/50 rounded-xl border border-white/10 text-primary font-mono font-bold text-lg group-hover:bg-primary group-hover:text-black transition-all duration-300 relative overflow-hidden shadow-lg">
+                            <span className="z-10">&gt;_</span>
+                            <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                        </div>
                     </div>
-                    <div className="flex flex-col leading-none">
-                        <span className="font-bold text-lg tracking-tight font-space-grotesk group-hover:text-primary transition-colors">
-                            GFG<span className="text-primary">.ITER</span>
-                        </span>
-                        <span className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
-                            Sys.Ver.2.0
-                        </span>
-                    </div>
-                </div>
 
-                {/* Desktop Nav */}
-                <nav className="hidden md:flex items-center gap-8">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            onClick={(e) => scrollToSection(e, link.href)}
-                            className="group relative text-sm font-medium text-muted-foreground hover:text-primary transition-colors font-mono"
+                    {/* Desktop Nav - Dynamic visibility based on scroll */}
+                    <nav className={cn(
+                        "hidden md:flex items-center gap-1 transition-all duration-500",
+                        scrolled ? "absolute left-1/2 -translate-x-1/2" : ""
+                    )}>
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                onClick={(e) => scrollToSection(e, link.href)}
+                                className={cn(
+                                    "relative px-4 py-1.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-widest transition-all duration-300",
+                                    "text-muted-foreground hover:text-white hover:bg-white/5"
+                                )}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                    </nav>
+
+                    {/* Actions */}
+                    <div className="hidden md:flex items-center gap-3">
+                        <button
+                            onClick={() => setShowJoinModal(true)}
+                            className="relative px-4 py-1.5 overflow-hidden bg-white/5 rounded-full text-white font-mono text-[10px] font-bold uppercase tracking-wider border border-white/10 hover:bg-primary hover:text-black hover:border-primary transition-all duration-300 group"
                         >
-                            <span className="absolute -left-4 opacity-0 group-hover:opacity-100 transition-opacity text-primary font-bold content-['>']">
-                                &gt;
+                            <span className="relative z-10 flex items-center gap-2">
+                                JOIN
                             </span>
-                            {link.label}
-                            <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary group-hover:w-full transition-all duration-300" />
-                        </Link>
-                    ))}
-                </nav>
-
-                {/* Actions */}
-                <div className="flex items-center gap-4">
-                    <Link href="/login" className="hidden md:block">
-                        <Button variant="ghost" size="sm" className="font-mono text-muted-foreground hover:text-primary hover:bg-primary/10 gap-2">
-                            <LogIn className="w-4 h-4" />
-                            Login
-                        </Button>
-                    </Link>
-
-                    <Link href="/join" className="hidden md:block">
-                        <button className="relative px-6 py-2 bg-secondary text-secondary-foreground text-sm font-mono uppercase tracking-wider hover:bg-primary hover:text-primary-foreground transition-all duration-300 border border-transparent hover:border-primary/50 group">
-                            <span className="mr-2 opacity-50 group-hover:opacity-100">[</span>
-                            Join_Chapter
-                            <span className="ml-2 opacity-50 group-hover:opacity-100">]</span>
                         </button>
-                    </Link>
+                    </div>
 
                     {/* Mobile Toggle */}
                     <button
-                        className="md:hidden p-2 text-foreground hover:text-primary transition-colors"
+                        className="md:hidden p-2 text-foreground hover:text-primary transition-colors z-50 rounded-full bg-white/5"
                         onClick={() => setIsOpen(!isOpen)}
                     >
-                        {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                        {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                     </button>
                 </div>
-            </div>
 
-            {/* Mobile Nav Overlay */}
-            <AnimatePresence>
-                {isOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className="absolute top-24 left-4 right-4 p-0 bg-card border border-border shadow-tech md:hidden z-50 overflow-hidden"
-                    >
-                        <div className="absolute top-0 left-0 w-full h-1 bg-primary/20">
-                            <div className="h-full bg-primary/50 w-1/3 animate-scanline" />
-                        </div>
-                        <div className="flex flex-col">
-                            {navLinks.map((link) => (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    onClick={(e) => scrollToSection(e, link.href)}
-                                    className="group flex items-center justify-between px-6 py-4 border-b border-border/50 hover:bg-secondary/50 transition-colors"
+                {/* Mobile Nav Overlay */}
+                <AnimatePresence>
+                    {isOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: -20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                            className="fixed top-24 left-4 right-4 bg-[#0A0A0A]/95 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden md:hidden z-40 pointer-events-auto p-4 shadow-2xl"
+                        >
+                            <div className="flex flex-col space-y-1">
+                                {navLinks.map((link) => (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        onClick={(e) => scrollToSection(e, link.href)}
+                                        className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-white/5 transition-colors group"
+                                    >
+                                        <span className="font-mono text-muted-foreground group-hover:text-white transition-colors font-bold uppercase tracking-wider text-sm flex items-center gap-3">
+                                            <span className="text-[10px] text-primary/50">0{link.id}</span>
+                                            {link.label}
+                                        </span>
+                                        <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-primary transition-colors" />
+                                    </Link>
+                                ))}
+                                <div className="h-px bg-white/5 my-2" />
+                                <button
+                                    onClick={() => {
+                                        setIsOpen(false)
+                                        setShowJoinModal(true)
+                                    }}
+                                    className="w-full mt-2 bg-primary text-black font-space-grotesk font-bold py-3 rounded-xl uppercase tracking-wider text-sm hover:bg-primary/90 transition-colors"
                                 >
-                                    <span className="font-mono text-muted-foreground group-hover:text-primary transition-colors">
-                                        <span className="text-xs mr-3 opacity-50">{link.id}</span>
-                                        {link.label}
-                                    </span>
-                                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-                                </Link>
-                            ))}
-                        </div>
-                        <div className="grid grid-cols-2 gap-px bg-border/50">
-                            <Link href="/login" className="block w-full text-center py-4 bg-card text-muted-foreground font-mono uppercase text-sm hover:text-primary hover:bg-secondary/50 transition-colors">
-                                Login_ID
-                            </Link>
-                            <Link href="/join" className="block w-full text-center py-4 bg-primary/10 text-primary font-mono uppercase text-sm font-bold tracking-wider hover:bg-primary/20 transition-colors">
-                                Join_Us
-                            </Link>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </motion.header>
+                                    Join Network
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </motion.header>
+        </>
     )
 }

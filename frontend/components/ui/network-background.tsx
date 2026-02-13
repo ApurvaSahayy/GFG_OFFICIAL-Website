@@ -14,10 +14,10 @@ export function NetworkBackground() {
         let width = canvas.width = window.innerWidth
         let height = canvas.height = window.innerHeight
 
-        const particles: { x: number; y: number; vx: number; vy: number }[] = []
-        const particleCount = Math.min(Math.floor((width * height) / 15000), 100)
-        const connectionDistance = 150
-        const mouseDistance = 200
+        const particles: { x: number; y: number; vx: number; vy: number; size: number }[] = []
+        const particleCount = Math.min(Math.floor((width * height) / 12000), 150)
+        const connectionDistance = 160
+        const mouseDistance = 250
 
         let mouse = { x: 0, y: 0 }
 
@@ -26,8 +26,9 @@ export function NetworkBackground() {
             particles.push({
                 x: Math.random() * width,
                 y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5
+                vx: (Math.random() - 0.5) * 0.8, // Slightly faster
+                vy: (Math.random() - 0.5) * 0.8,
+                size: Math.random() * 2 + 1
             })
         }
 
@@ -66,8 +67,8 @@ export function NetworkBackground() {
                 if (distMouse < mouseDistance) {
                     const force = (mouseDistance - distMouse) / mouseDistance
                     const angle = Math.atan2(dyMouse, dxMouse)
-                    p.vx += Math.cos(angle) * force * 0.1
-                    p.vy += Math.sin(angle) * force * 0.1
+                    p.vx += Math.cos(angle) * force * 0.2
+                    p.vy += Math.sin(angle) * force * 0.2
                 }
 
                 // Friction
@@ -77,10 +78,11 @@ export function NetworkBackground() {
                 // Pulse Wave Effect
                 const wave = Math.sin(time + p.x * 0.01 + p.y * 0.01) * 0.5 + 0.5
 
-                // Draw Particle - Digital Square with Pulse
+                // Draw Particle - Digital Square
                 ctx.beginPath()
-                ctx.rect(p.x, p.y, 2 + wave, 2 + wave)
-                ctx.fillStyle = `rgba(34, 197, 94, ${0.3 + (Math.abs(p.vx) + Math.abs(p.vy)) * 0.5 + wave * 0.2})`
+                ctx.rect(p.x, p.y, p.size, p.size)
+                // Cyan Color: 102, 252, 241
+                ctx.fillStyle = `rgba(102, 252, 241, ${0.4 + wave * 0.3})`
                 ctx.fill()
 
                 // Draw Connections
@@ -94,7 +96,9 @@ export function NetworkBackground() {
                         ctx.beginPath()
                         ctx.moveTo(p.x, p.y)
                         ctx.lineTo(p2.x, p2.y)
-                        ctx.strokeStyle = `rgba(34, 197, 94, ${0.1 * (1 - dist / connectionDistance)})`
+                        // Cyan Line
+                        ctx.strokeStyle = `rgba(102, 252, 241, ${0.15 * (1 - dist / connectionDistance)})`
+                        ctx.lineWidth = 1
                         ctx.stroke()
                     }
                 }
@@ -114,8 +118,7 @@ export function NetworkBackground() {
     return (
         <canvas
             ref={canvasRef}
-            className="absolute inset-0 pointer-events-none md:pointer-events-auto"
-            style={{ zIndex: 0 }}
+            className="absolute inset-0 pointer-events-none z-0"
         />
     )
 }

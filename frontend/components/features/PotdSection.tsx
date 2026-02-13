@@ -85,10 +85,39 @@ export function PotdSection() {
 
                             <div className="flex items-center gap-2">
                                 <div className="relative group">
-                                    <button className="flex items-center gap-1 text-xs font-mono text-muted-foreground hover:text-primary transition-colors">
+                                    <button
+                                        className="flex items-center gap-1 text-xs font-mono text-muted-foreground hover:text-primary transition-colors px-3 py-1 border border-border rounded hover:border-primary"
+                                        onClick={() => {
+                                            const dropdown = document.getElementById('lang-dropdown');
+                                            if (dropdown) {
+                                                dropdown.classList.toggle('hidden');
+                                            }
+                                        }}
+                                    >
                                         {selectedLang.name} <ChevronDown className="w-3 h-3" />
                                     </button>
-                                    {/* Dropdown would go here, simplified for UI */}
+                                    <div
+                                        id="lang-dropdown"
+                                        className="hidden absolute top-full mt-1 right-0 bg-card border border-border rounded shadow-tech overflow-hidden z-10 min-w-[120px]"
+                                    >
+                                        {languages.map((lang) => (
+                                            <button
+                                                key={lang.name}
+                                                onClick={() => {
+                                                    setSelectedLang(lang);
+                                                    document.getElementById('lang-dropdown')?.classList.add('hidden');
+                                                }}
+                                                className={cn(
+                                                    "w-full text-left px-4 py-2 text-xs font-mono transition-colors",
+                                                    selectedLang.name === lang.name
+                                                        ? "bg-primary/20 text-primary"
+                                                        : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+                                                )}
+                                            >
+                                                {lang.name}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>

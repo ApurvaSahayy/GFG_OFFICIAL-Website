@@ -2,16 +2,35 @@
 
 import { cn } from "@/lib/utils"
 
-export function GlitchText({ text, className }: { text: string, className?: string }) {
+interface GlitchTextProps extends React.HTMLAttributes<HTMLSpanElement> {
+    text: string
+    as?: "span" | "h1" | "h2" | "h3" | "p"
+}
+
+export function GlitchText({ text, className, as: Component = "span", ...props }: GlitchTextProps) {
     return (
-        <div className={cn("relative inline-block group", className)}>
+        <Component
+            className={cn(
+                "relative inline-block font-bold text-transparent bg-clip-text bg-white",
+                className
+            )}
+            {...props}
+        >
             <span className="relative z-10">{text}</span>
-            <span className="absolute top-0 left-0 -z-10 w-full h-full text-primary opacity-0 group-hover:opacity-70 group-hover:animate-glitch-1 clip-path-inset-1">
+            <span
+                aria-hidden="true"
+                className="absolute top-0 left-0 -z-10 w-full h-full text-primary opacity-70 animate-glitch-1"
+                style={{ clipPath: "polygon(0 0, 100% 0, 100% 45%, 0 45%)", transform: "translate(-2px)" }}
+            >
                 {text}
             </span>
-            <span className="absolute top-0 left-0 -z-10 w-full h-full text-red-500 opacity-0 group-hover:opacity-70 group-hover:animate-glitch-2 clip-path-inset-2">
+            <span
+                aria-hidden="true"
+                className="absolute top-0 left-0 -z-10 w-full h-full text-secondary opacity-70 animate-glitch-2"
+                style={{ clipPath: "polygon(0 80%, 100% 20%, 100% 100%, 0 100%)", transform: "translate(2px)" }}
+            >
                 {text}
             </span>
-        </div>
+        </Component>
     )
 }
