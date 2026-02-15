@@ -142,7 +142,7 @@ export function Navbar() {
                         className="fixed top-24 left-4 right-4 z-40 p-4 rounded-2xl bg-[#050505]/90 backdrop-blur-2xl border border-white/10 shadow-2xl md:hidden"
                     >
                         <div className="flex items-center justify-center mb-4">
-                            <Image src="/gfg-official-logo.png" alt="GFG Logo" width={32} height={32} className="object-contain" />
+                            <Image src={gfgLogo} alt="GFG Logo" width={32} height={32} className="object-contain" />
                         </div>
                         <nav className="flex flex-col gap-2">
                             {navLinks.map((link) => (
