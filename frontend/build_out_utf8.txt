@@ -1,0 +1,25 @@
+﻿node.exe : error: 
+unknown option 
+'--no-turbo'
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" "C:
+\Users\ayush\AppData\
+Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (error:    
+ unknown option '    
+--no-turbo':Stri    
+ng) [], RemoteEx    
+ception
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+(Did you mean 
+--turbo?)
