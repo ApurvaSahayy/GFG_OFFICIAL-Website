@@ -117,7 +117,7 @@ export function HeroSectionV2() {
                     >
                         <div className="absolute inset-0 bg-primary/20 blur-[50px] rounded-full" />
                         <Image
-                            src="/gfg-official-logo.png"
+                            src="/GFG_OFFICIAL-Website/gfg-official-logo.png"
                             alt="GFG Official Logo"
                             fill
                             className="object-contain drop-shadow-[0_0_15px_rgba(0,255,128,0.5)]"

@@ -64,7 +64,7 @@ export function NavbarV2() {
                     {/* Logo Section */}
                     <Link href="/" className="flex items-center gap-2 group shrink-0">
                         <div className="relative w-8 h-8 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 overflow-hidden group-hover:border-primary/50 transition-colors">
-                            <Image src="/gfg-official-logo.png" alt="GFG Logo" width={20} height={20} className="object-contain" />
+                            <Image src="/GFG_OFFICIAL-Website/gfg-official-logo.png" alt="GFG Logo" width={20} height={20} className="object-contain" />
                         </div>
                         <span className={cn(
                             "font-space-grotesk font-bold text-sm tracking-wide hidden sm:block transition-all duration-300",

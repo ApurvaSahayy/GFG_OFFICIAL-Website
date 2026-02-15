@@ -35,7 +35,7 @@ export function Footer() {
                         <div className="flex items-center gap-2 text-2xl font-bold font-space-grotesk tracking-tighter">
                             <div className="w-12 h-12 bg-white/5 rounded-lg flex items-center justify-center border border-white/10 overflow-hidden relative">
                                 <Image
-                                    src="/gfg-official-logo.png"
+                                    src="/GFG_OFFICIAL-Website/gfg-official-logo.png"
                                     alt="GFG Logo"
                                     fill
                                     className="object-contain p-2"
