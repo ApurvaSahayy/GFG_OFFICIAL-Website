@@ -18,6 +18,8 @@ export interface Subsection {
     title: string
     description: string
     date?: string // Event date
+    time?: string // Event time (e.g., "04:30 PM - 06:00 PM IST")
+    location?: string // Event location
     attendees?: number // Number of participants
     highlights?: string[] // Key highlights
     media: MediaItem[]
@@ -194,7 +196,7 @@ export const timelineData: TimelineSection[] = [
                 id: "zahid",
                 title: "Zahid Akhtar",
                 description: "Co-founder's journey from ideation to building a thriving tech community.",
-                date: "Founder Story",
+                date: "December 23, 2025",
                 media: [
                     {
                         type: "image",

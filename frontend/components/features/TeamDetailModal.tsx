@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, CheckCircle2, Users, Rocket, Trophy, TrendingUp, Star, Zap, Target, Award } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -73,11 +74,85 @@ export function TeamDetailModal({ team, isOpen, onClose }: TeamDetailModalProps)
     if (!team) return null
 
     const colorClasses = getColorClasses(team.color)
+    const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+    // Hide scrollbar directly on the element
+    useEffect(() => {
+        if (scrollContainerRef.current && isOpen) {
+            const element = scrollContainerRef.current
+            // Apply styles directly
+            element.style.setProperty('scrollbar-width', 'none', 'important')
+            element.style.setProperty('-ms-overflow-style', 'none', 'important')
+            
+            // For webkit browsers, we need to inject CSS
+            const styleId = 'team-modal-scrollbar-hide'
+            if (!document.getElementById(styleId)) {
+                const style = document.createElement('style')
+                style.id = styleId
+                style.textContent = `
+                    #team-modal-scroll::-webkit-scrollbar {
+                        display: none !important;
+                        width: 0 !important;
+                        height: 0 !important;
+                        background: transparent !important;
+                    }
+                `
+                document.head.appendChild(style)
+            }
+        }
+    }, [isOpen])
+
+    // Lock body scroll when modal is open
+    useEffect(() => {
+        if (isOpen) {
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+            const originalBodyOverflow = document.body.style.overflow
+            const originalBodyPaddingRight = document.body.style.paddingRight
+            const originalHtmlOverflow = document.documentElement.style.overflow
+            const scrollY = window.scrollY
+            
+            // Prevent scrolling on body and html
+            document.body.style.overflow = 'hidden'
+            document.body.style.paddingRight = `${scrollbarWidth}px`
+            document.body.style.position = 'fixed'
+            document.body.style.top = `-${scrollY}px`
+            document.body.style.width = '100%'
+            document.documentElement.style.overflow = 'hidden'
+            
+            return () => {
+                // Restore original styles
+                document.body.style.overflow = originalBodyOverflow
+                document.body.style.paddingRight = originalBodyPaddingRight
+                document.body.style.position = ''
+                document.body.style.top = ''
+                document.body.style.width = ''
+                document.documentElement.style.overflow = originalHtmlOverflow
+                
+                // Restore scroll position
+                window.scrollTo(0, scrollY)
+            }
+        }
+    }, [isOpen])
 
     return (
         <AnimatePresence>
             {isOpen && (
                 <>
+                    {/* Inject style to hide scrollbar */}
+                    <style dangerouslySetInnerHTML={{
+                        __html: `
+                            #team-modal-scroll::-webkit-scrollbar {
+                                display: none !important;
+                                width: 0 !important;
+                                height: 0 !important;
+                                background: transparent !important;
+                            }
+                            #team-modal-scroll {
+                                -ms-overflow-style: none !important;
+                                scrollbar-width: none !important;
+                            }
+                        `
+                    }} />
                     {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -94,20 +169,34 @@ export function TeamDetailModal({ team, isOpen, onClose }: TeamDetailModalProps)
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
                             transition={{ type: "spring", duration: 0.5 }}
-                            className="relative w-full max-w-5xl my-8 bg-black/95 border border-white/10 rounded-2xl pointer-events-auto max-h-[85vh] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent hover:scrollbar-thumb-white/30"
+                            className="relative w-full max-w-5xl my-8 bg-black/95 border border-white/10 rounded-2xl pointer-events-auto max-h-[85vh] overflow-hidden flex flex-col"
                             onClick={(e) => e.stopPropagation()}
-                            style={{
-                                scrollbarWidth: 'thin',
-                                scrollbarColor: 'rgba(255, 255, 255, 0.2) transparent'
-                            }}
                         >
-                            {/* Close Button */}
+                            {/* Close Button - Fixed at top */}
                             <button
                                 onClick={onClose}
-                                className="sticky top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all hover:scale-110 group ml-auto mr-4"
+                                className="absolute top-4 right-4 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all hover:scale-110 group"
                             >
                                 <X className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
                             </button>
+
+                            {/* Scrollable content container - scrollbar hidden but scrolling enabled */}
+                            <div 
+                                ref={scrollContainerRef}
+                                id="team-modal-scroll"
+                                className="overflow-y-auto overflow-x-hidden flex-1 scroll-smooth"
+                                style={{
+                                    WebkitOverflowScrolling: 'touch',
+                                    scrollbarWidth: 'none',
+                                    msOverflowStyle: 'none',
+                                    maxHeight: 'calc(85vh)',
+                                    height: '100%'
+                                }}
+                                onWheel={(e) => {
+                                    // Ensure wheel scrolling works
+                                    e.stopPropagation()
+                                }}
+                            >
 
                             {/* Enhanced Header with Gradient */}
                             <div className={cn(
@@ -357,6 +446,7 @@ export function TeamDetailModal({ team, isOpen, onClose }: TeamDetailModalProps)
                                         </span>
                                     </button>
                                 </motion.div>
+                            </div>
                             </div>
                         </motion.div>
                     </div>
