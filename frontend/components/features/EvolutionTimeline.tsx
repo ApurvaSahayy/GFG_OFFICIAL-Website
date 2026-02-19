@@ -32,7 +32,7 @@ export function EvolutionTimeline() {
             const originalBodyPaddingRight = document.body.style.paddingRight
             const originalHtmlOverflow = document.documentElement.style.overflow
             const scrollY = window.scrollY
-            
+
             // Prevent scrolling on body and html
             document.body.style.overflow = 'hidden'
             document.body.style.paddingRight = `${scrollbarWidth}px`
@@ -40,7 +40,7 @@ export function EvolutionTimeline() {
             document.body.style.top = `-${scrollY}px`
             document.body.style.width = '100%'
             document.documentElement.style.overflow = 'hidden'
-            
+
             return () => {
                 // Restore original styles
                 document.body.style.overflow = originalBodyOverflow
@@ -49,7 +49,7 @@ export function EvolutionTimeline() {
                 document.body.style.top = ''
                 document.body.style.width = ''
                 document.documentElement.style.overflow = originalHtmlOverflow
-                
+
                 // Restore scroll position
                 window.scrollTo(0, scrollY)
             }
@@ -180,7 +180,7 @@ export function EvolutionTimeline() {
                         </span>
                     </h2>
                     <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
-                        Explore our chapter's milestones through an immersive visual journey
+                        Explore our chapter&apos;s milestones through an immersive visual journey
                     </p>
                 </motion.div>
 
@@ -431,59 +431,20 @@ function ContentPanel({ section, subsection, onOpenLightbox }: ContentPanelProps
 
                     {/* Event Details Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-                            {subsection.date && (
-                                <div className="glass-card rounded-xl p-4 border border-white/5 bg-white/5">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                                            <Calendar className="w-5 h-5" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">Date</p>
-                                            <p className="text-sm font-medium text-white">{subsection.date}</p>
-                                        </div>
+                        {subsection.date && (
+                            <div className="glass-card rounded-xl p-4 border border-white/5 bg-white/5">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                                        <Calendar className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">Date</p>
+                                        <p className="text-sm font-medium text-white">{subsection.date}</p>
                                     </div>
                                 </div>
-                            )}
-                            {subsection.time && (
-                                <div className="glass-card rounded-xl p-4 border border-white/5 bg-white/5">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                                            <Clock className="w-5 h-5" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">Time</p>
-                                            <p className="text-sm font-medium text-white">{subsection.time}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                            {subsection.location && (
-                                <div className="glass-card rounded-xl p-4 border border-white/5 bg-white/5">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                                            <MapPin className="w-5 h-5" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">Location</p>
-                                            <p className="text-sm font-medium text-white">{subsection.location}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                            {subsection.attendees && (
-                                <div className="glass-card rounded-xl p-4 border border-white/5 bg-white/5">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                                            <UserCheck className="w-5 h-5" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">Participants</p>
-                                            <p className="text-sm font-medium text-white">{subsection.attendees}+</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                            {/* Additional tabs with titles only */}
+                            </div>
+                        )}
+                        {subsection.time && (
                             <div className="glass-card rounded-xl p-4 border border-white/5 bg-white/5">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 rounded-lg bg-primary/10 text-primary">
@@ -491,10 +452,12 @@ function ContentPanel({ section, subsection, onOpenLightbox }: ContentPanelProps
                                     </div>
                                     <div>
                                         <p className="text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">Time</p>
-                                        <p className="text-sm font-medium text-white/50">—</p>
+                                        <p className="text-sm font-medium text-white">{subsection.time}</p>
                                     </div>
                                 </div>
                             </div>
+                        )}
+                        {subsection.location && (
                             <div className="glass-card rounded-xl p-4 border border-white/5 bg-white/5">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 rounded-lg bg-primary/10 text-primary">
@@ -502,10 +465,12 @@ function ContentPanel({ section, subsection, onOpenLightbox }: ContentPanelProps
                                     </div>
                                     <div>
                                         <p className="text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">Location</p>
-                                        <p className="text-sm font-medium text-white/50">—</p>
+                                        <p className="text-sm font-medium text-white">{subsection.location}</p>
                                     </div>
                                 </div>
                             </div>
+                        )}
+                        {subsection.attendees && (
                             <div className="glass-card rounded-xl p-4 border border-white/5 bg-white/5">
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 rounded-lg bg-primary/10 text-primary">
@@ -513,11 +478,46 @@ function ContentPanel({ section, subsection, onOpenLightbox }: ContentPanelProps
                                     </div>
                                     <div>
                                         <p className="text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">Participants</p>
-                                        <p className="text-sm font-medium text-white/50">—</p>
+                                        <p className="text-sm font-medium text-white">{subsection.attendees}+</p>
                                     </div>
                                 </div>
                             </div>
+                        )}
+                        {/* Additional tabs with titles only */}
+                        <div className="glass-card rounded-xl p-4 border border-white/5 bg-white/5">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                                    <Clock className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <p className="text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">Time</p>
+                                    <p className="text-sm font-medium text-white/50">—</p>
+                                </div>
+                            </div>
                         </div>
+                        <div className="glass-card rounded-xl p-4 border border-white/5 bg-white/5">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                                    <MapPin className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <p className="text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">Location</p>
+                                    <p className="text-sm font-medium text-white/50">—</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="glass-card rounded-xl p-4 border border-white/5 bg-white/5">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                                    <UserCheck className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <p className="text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">Participants</p>
+                                    <p className="text-sm font-medium text-white/50">—</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="min-h-[400px]">

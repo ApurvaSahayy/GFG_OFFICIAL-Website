@@ -38,7 +38,7 @@ export function AboutSection() {
                             className="space-y-6 text-muted-foreground text-lg leading-relaxed font-light"
                         >
                             <p>
-                                <strong className="text-foreground">GeeksforGeeks Student Chapter ITER</strong> is not just a club; it's a{" "}
+                                <strong className="text-foreground">GeeksforGeeks Student Chapter ITER</strong> is not just a club; it&apos;s a{" "}
                                 <GradientText gradient="primary">
                                     high-performance compiler
                                 </GradientText>{" "}
