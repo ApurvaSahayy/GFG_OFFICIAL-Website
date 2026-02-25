@@ -220,8 +220,8 @@ function TechCard({ member, index, isLeadership = false }: { member: TeamMember,
                 isLeadership ? "max-w-[380px] aspect-[4/5]" : "max-w-[300px]",
                 isLeadership ? theme.glow : "hover:" + theme.glow
             )}
-        >
-            <div className="relative z-10 flex flex-col pt-6 pb-8 px-6 h-full">
+        
+>            <div className="relative z-10 flex flex-col pt-6 pb-8 px-6 h-full">
                 <div className="flex justify-between items-center mb-6">
                     <div className="flex items-center gap-2"><div className={cn("p-1.5 rounded-md bg-white/5", theme.primary)}><Icon className="w-4 h-4" /></div><span className="font-mono text-[10px] text-white/40 tracking-wider">SYS_ID: {member.id.split('-').pop()}</span></div>
                     <div className={cn("text-[9px] font-bold px-2 py-0.5 rounded border border-white/10 bg-black/20 uppercase tracking-widest", theme.primary)}>{member.position || "Operator"}</div>

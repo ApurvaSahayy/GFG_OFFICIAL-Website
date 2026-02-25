@@ -21,11 +21,7 @@ export function TracksSection() {
             variant: "secondary",
             focusAreas: ["Web Development", "Mobile Apps", "AI/ML", "Blockchain", "Cloud Computing"],
             techStack: ["React", "Next.js", "TypeScript", "Python", "TensorFlow", "Solidity", "AWS", "Docker"],
-            currentProjects: [
-                { name: "GFG Official Website Redesign", description: "Modern, responsive website with cutting-edge UI/UX", status: "active" },
-                { name: "AI-powered Code Review Tool", description: "Automated code analysis using machine learning", status: "planning" },
-                { name: "Campus Blockchain Network", description: "Decentralized platform for student credentials", status: "active" }
-            ],
+            groupPhoto: "https://example.com/tech-team-group.jpg",
             teamMembers: [
                 { name: "Vivek Ranjan", role: "Vice President", avatar: "https://github.com/msVivekRanjan.png" },
                 { name: "Raj Biswal", role: "Tech Lead" },
@@ -51,11 +47,7 @@ export function TracksSection() {
             variant: "primary",
             focusAreas: ["UI/UX Design", "Graphic Design", "Brand Identity", "Motion Graphics", "Product Design"],
             techStack: ["Figma", "Adobe XD", "Illustrator", "Photoshop", "Blender", "Framer", "Principle"],
-            currentProjects: [
-                { name: "GFG Brand Refresh 2026", description: "Complete visual identity redesign for modern appeal", status: "active" },
-                { name: "Event Poster Campaign", description: "Creative promotional materials for all events", status: "active" },
-                { name: "Mobile App UI System", description: "Comprehensive design system for mobile applications", status: "completed" }
-            ],
+            groupPhoto: "https://example.com/tech-team-group.jpg",
             teamMembers: [
                 { name: "Runjhun Pradhan", role: "Media Lead" },
                 { name: "Design Team", role: "UI/UX Designers" },
@@ -81,11 +73,7 @@ export function TracksSection() {
             variant: "accent",
             focusAreas: ["Social Media Management", "Event Marketing", "Community Building", "Content Creation", "Partnerships"],
             techStack: ["Canva", "Buffer", "Hootsuite", "Google Analytics", "Mailchimp", "HubSpot"],
-            currentProjects: [
-                { name: "Campus Ambassador Program", description: "Building a network of student representatives", status: "active" },
-                { name: "Tech Talk Series Promotion", description: "Marketing campaign for speaker events", status: "active" },
-                { name: "Industry Partnership Drive", description: "Connecting with tech companies for collaborations", status: "planning" }
-            ],
+            groupPhoto: "https://example.com/tech-team-group.jpg",
             teamMembers: [
                 { name: "Ayush Pradhan", role: "PR & Outreach" },
                 { name: "Social Team", role: "Content Creators" },
@@ -111,11 +99,7 @@ export function TracksSection() {
             variant: "secondary",
             focusAreas: ["Event Logistics", "Resource Management", "Budget Planning", "Vendor Coordination", "Team Coordination"],
             techStack: ["Notion", "Trello", "Asana", "Google Workspace", "Slack", "Zoom", "Excel"],
-            currentProjects: [
-                { name: "Annual Tech Fest 2026", description: "Planning and execution of flagship annual event", status: "planning" },
-                { name: "Workshop Series Coordination", description: "Managing logistics for monthly skill workshops", status: "active" },
-                { name: "Resource Optimization System", description: "Streamlining resource allocation and tracking", status: "active" }
-            ],
+            groupPhoto: "https://example.com/tech-team-group.jpg",
             teamMembers: [
                 { name: "Mukesh Padhi", role: "Management Lead", avatar: "https://github.com/Mukeshkup.png" },
                 { name: "Ops Team", role: "Event Coordinators" },
